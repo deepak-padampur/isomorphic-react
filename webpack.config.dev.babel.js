@@ -5,7 +5,7 @@ import path from 'path';//it is used to resolve inconsistency between windows an
 
 export default {
   entry: ['webpack-hot-middleware/client?reload=true',
-    'babel-generator-runtime',
+    'babel-regenerator-runtime',
     path.resolve(__dirname, 'src/')
   ],
   output: {
