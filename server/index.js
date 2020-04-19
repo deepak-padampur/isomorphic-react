@@ -26,9 +26,29 @@ function* getQuestions() {
   return JSON.parse(data);
 }
 
+function* getQuestion(id) {
+  let data;
+  if (useLiveData) {
+    data = yield get(question(id), { gzip: true, json: true });
+  } else {
+    const questions = yield getQuestions();
+    const question = questions.items.find(question => question.question_id === id);
+    question.body = `Mock question body:${id}`;
+    data = { items: [question] };
+
+  }
+  return data;
+}
+
 //make an  api route to handle
 app.get(['/api/questions'], function* (req, res) {
   const data = yield getQuestions();
+  yield delay(150);
+  res.json(data);
+})
+
+app.get(['/api/questions/:id'], function* (req, res) {
+  const data = yield getQuestion(req.params.id);
   yield delay(150);
   res.json(data);
 })
